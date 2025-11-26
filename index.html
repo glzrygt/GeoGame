@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMT 458 - Hometown Game</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div id="intro-screen" class="active">
+        <div id="intro-content">
+            </div>
+    </div>
+    
+    <header id="stats-bar">
+        <h1>Hometown Game</h1>
+        <div class="stats-container">
+            <span id="timer">Time: 60</span>
+            <span id="score">Score: 0</span>
+            <span id="lives">Lives: ♥ ♥ ♥</span>
+            <button id="mute-button">🔇</button>
+        </div>
+    </header>
+
+    <div id="prompt-bar">
+        Game is ready to start...
+    </div>
+
+    <div id="map"></div>
+
+    <div id="modal" class="active">
+        <h2>Hometown Game</h2>
+        <p>Find the Turkish province based on its license plate or local melody.</p>
+        <button id="start-button">Start Game</button>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+/* --- BASE STYLES --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrolling */
+    background-color: #f4f4f4;
+}
+
+/* Map must take up the main viewport area */
+#map {
+    height: calc(100vh - 120px); /* Full height minus header and prompt bar */
+    width: 100%;
+    z-index: 0;
+    border-top: 2px solid #ddd;
+}
+
+/* Stats Bar Styling */
+#stats-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px;
+    background-color: #2c3e50; /* Darker blue/gray for professionalism */
+    color: white;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.stats-container span {
+    margin-right: 15px;
+}
+
+/* Prompt Bar Styling (For Questions and Feedback) */
+#prompt-bar {
+    background-color: #ecf0f1;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    min-height: 30px;
+    transition: background-color 0.5s, color 0.5s; /* Smooth feedback transition */
+}
+
+.question-data {
+    font-size: 1.5em;
+    color: #e74c3c; /* Highlight question data */
+}
+
+#play-melody-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+/* --- MODAL STYLES --- */
+#modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(44, 62, 80, 0.95);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Must be above map and other elements */
+}
+
+#modal:not(.active) {
+    display: none;
+}
+
+#start-button {
+    padding: 12px 30px;
+    font-size: 1.2em;
+    margin-top: 20px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#start-button:hover {
+    background-color: #27ae60;
+}
+
+/* --- INTRO SEQUENCE STYLES & ANIMATIONS --- */
+#intro-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; 
+    opacity: 1;
+    transition: opacity 1s ease-out; 
+    overflow: hidden;
+}
+
+#intro-screen:not(.active) {
+    display: none;
+}
+
+/* Speaker Warning Gradient Text Effect */
+.speaker-text {
+    background: linear-gradient(45deg, #eee, #aaa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 3em;
+    opacity: 0;
+    animation: fade-in-grow 1.5s forwards 0.5s;
+    transition: opacity 0.5s;
+}
+
+/* Placeholder for video/image background (Pikap/Çöl) */
+#desert-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0; /* JS will fade this in */
+    transition: opacity 1s;
+}
+
+/* Geri Sayım */
+.countdown-number {
+    font-size: 10em;
+    font-weight: bold;
+    animation: pulse 0.5s infinite alternate;
+}
+
+/* Yol Tabelası Yaklaşma Animasyonu */
+@keyframes approach-and-net {
+    0% { transform: scale(0.1); opacity: 0; filter: blur(10px); }
+    80% { opacity: 1; filter: blur(0); }
+    100% { transform: scale(1.5); opacity: 0.8; }
+}
+
+/* Animasyon Keyframes */
+@keyframes fade-in-grow {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1.0); }
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}

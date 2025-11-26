@@ -1,0 +1,602 @@
+[
+  {
+    "plaka": 1,
+    "il": "Adana",
+    "lat": 37.0000,
+    "lon": 35.3250,
+    "audioUrl": "audio/adana.mp3", /* Matched to the simplified filename */
+    "gameMode": "audio" 
+  },
+  {
+    "plaka": 2,
+    "il": "Adiyaman",
+    "lat": 37.7645,
+    "lon": 38.2783,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 3,
+    "il": "Afyonkarahisar",
+    "lat": 38.7562,
+    "lon": 30.5567,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 4,
+    "il": "Agri",
+    "lat": 39.7289,
+    "lon": 43.0560,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 5,
+    "il": "Aksaray",
+    "lat": 38.3670,
+    "lon": 34.0298,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 6,
+    "il": "Amasya",
+    "lat": 40.6558,
+    "lon": 35.8369,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 7,
+    "il": "Ankara",
+    "lat": 39.9255,
+    "lon": 32.8663,
+    "audioUrl": "audio/ankara.mp3", /* Matched to the simplified filename */
+    "gameMode": "audio"
+  },
+  {
+    "plaka": 8,
+    "il": "Antalya",
+    "lat": 36.8926,
+    "lon": 30.7011,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 9,
+    "il": "Ardahan",
+    "lat": 41.1147,
+    "lon": 42.7020,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 10,
+    "il": "Artvin",
+    "lat": 41.1820,
+    "lon": 41.8174,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 11,
+    "il": "Aydin",
+    "lat": 37.8420,
+    "lon": 27.8427,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 12,
+    "il": "Balikesir",
+    "lat": 39.6450,
+    "lon": 27.8860,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 13,
+    "il": "Bartin",
+    "lat": 41.6705,
+    "lon": 32.4649,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 14,
+    "il": "Batman",
+    "lat": 37.8804,
+    "lon": 41.1278,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 15,
+    "il": "Bayburt",
+    "lat": 40.2505,
+    "lon": 40.2285,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 16,
+    "il": "Bilecik",
+    "lat": 40.1444,
+    "lon": 30.0150,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 17,
+    "il": "Bingöl",
+    "lat": 38.8845,
+    "lon": 40.5401,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 18,
+    "il": "Bitlis",
+    "lat": 38.4069,
+    "lon": 42.1678,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 19,
+    "il": "Bolu",
+    "lat": 40.7335,
+    "lon": 31.5794,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 20,
+    "il": "Burdur",
+    "lat": 37.4984,
+    "lon": 30.0520,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 21,
+    "il": "Bursa",
+    "lat": 40.2185,
+    "lon": 29.0609,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 22,
+    "il": "Çanakkale",
+    "lat": 40.1466,
+    "lon": 26.4026,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 23,
+    "il": "Çankiri",
+    "lat": 40.6015,
+    "lon": 33.6069,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 24,
+    "il": "Çorum",
+    "lat": 40.5492,
+    "lon": 34.9540,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 25,
+    "il": "Denizli",
+    "lat": 37.7788,
+    "lon": 29.1365,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 26,
+    "il": "Diyarbakir",
+    "lat": 37.9100,
+    "lon": 40.2319,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 27,
+    "il": "Düzce",
+    "lat": 40.8407,
+    "lon": 31.1578,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 28,
+    "il": "Edirne",
+    "lat": 41.6705,
+    "lon": 26.5552,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 29,
+    "il": "Elazig",
+    "lat": 38.6834,
+    "lon": 39.2227,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 30,
+    "il": "Erzincan",
+    "lat": 39.7540,
+    "lon": 39.4975,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 31,
+    "il": "Erzurum",
+    "lat": 39.9079,
+    "lon": 41.2758,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 32,
+    "il": "Eskisehir",
+    "lat": 39.7766,
+    "lon": 30.5208,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 33,
+    "il": "Gaziantep",
+    "lat": 37.0504,
+    "lon": 37.3820,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 34,
+    "il": "Giresun",
+    "lat": 40.8520,
+    "lon": 38.3845,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 35,
+    "il": "Gümüshane",
+    "lat": 40.4687,
+    "lon": 39.7397,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 36,
+    "il": "Hakkari",
+    "lat": 37.4913,
+    "lon": 44.0205,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 37,
+    "il": "Hatay",
+    "lat": 36.3150,
+    "lon": 36.1684,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 38,
+    "il": "Igdir",
+    "lat": 40.0650,
+    "lon": 43.8967,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 39,
+    "il": "Isparta",
+    "lat": 37.8333,
+    "lon": 30.9329,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 40,
+    "il": "Istanbul",
+    "lat": 41.0082,
+    "lon": 28.9784,
+    "audioUrl": "audio/istanbul.mp3",
+    "gameMode": "audio"
+  },
+  {
+    "plaka": 41,
+    "il": "Izmir",
+    "lat": 38.4192,
+    "lon": 27.1287,
+    "audioUrl": "audio/izmir.mp3",
+    "gameMode": "audio"
+  },
+  {
+    "plaka": 42,
+    "il": "Kahramanmaras",
+    "lat": 37.5855,
+    "lon": 36.9238,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 43,
+    "il": "Karabük",
+    "lat": 41.2188,
+    "lon": 32.6596,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 44,
+    "il": "Karaman",
+    "lat": 37.1856,
+    "lon": 33.2422,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 45,
+    "il": "Kars",
+    "lat": 40.5985,
+    "lon": 43.1023,
+    "audioUrl": null,
+    "gameMode": "plate"
+  },
+  {
+    "plaka": 46,
+    "il": "Kilis",
+    "lat": 36.7025,
+    "lon": 37.1121,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 47,
+    "il": "Kirikkale",
+    "lat": 39.8465,
+    "lon": 33.6069,
+    "audioUrl": null,
+    "gameMode": "plate"
+  },
+  {
+    "plaka": 48,
+    "il": "Kirsehir",
+    "lat": 39.1458,
+    "lon": 34.1594,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 49,
+    "il": "Kocaeli",
+    "lat": 40.7663,
+    "lon": 30.0768,
+    "audioUrl": "audio/izmit.mp3",
+    "gameMode": "audio"
+  },
+  {
+    "plaka": 50,
+    "il": "Konya",
+    "lat": 37.8741,
+    "lon": 32.4932,
+    "audioUrl": "audio/konya.mp3",
+    "gameMode": "audio"
+  },
+  {
+    "plaka": 51,
+    "il": "Malatya",
+    "lat": 38.3582,
+    "lon": 38.3129,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 52,
+    "il": "Manisa",
+    "lat": 38.7497,
+    "lon": 27.5683,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 53,
+    "il": "Mardin",
+    "lat": 37.3188,
+    "lon": 40.7410,
+    "audioUrl": null,
+    "gameMode": "plate"
+  },
+  {
+    "plaka": 54,
+    "il": "Mugla",
+    "lat": 37.2155,
+    "lon": 28.3639,
+    "audioUrl": "audio/mugla.mp3",
+    "gameMode": "audio"
+  },
+  {
+    "plaka": 55,
+    "il": "Mus",
+    "lat": 39.0487,
+    "lon": 41.8740,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 56,
+    "il": "Nevsehir",
+    "lat": 38.6433,
+    "lon": 34.7088,
+    "audioUrl": null,
+    "gameMode": "plate"
+  },
+  {
+    "plaka": 57,
+    "il": "Nigde",
+    "lat": 37.9540,
+    "lon": 34.6750,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 58,
+    "il": "Ordu",
+    "lat": 40.9859,
+    "lon": 37.5878,
+    "audioUrl": "audio/ordu.mp3",
+    "gameMode": "audio"
+  },
+  {
+    "plaka": 59,
+    "il": "Osmaniye",
+    "lat": 37.2155,
+    "lon": 36.2163,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 60,
+    "il": "Rize",
+    "lat": 40.9701,
+    "lon": 40.4705,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 61,
+    "il": "Sakarya",
+    "lat": 40.6978,
+    "lon": 30.3800,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 62,
+    "il": "Sanliurfa",
+    "lat": 37.1651,
+    "lon": 38.7963,
+    "audioUrl": "audio/urfa.mp3",
+    "gameMode": "audio"
+  },
+  {
+    "plaka": 63,
+    "il": "Siirt",
+    "lat": 37.9405,
+    "lon": 41.9567,
+    "audioUrl": null,
+    "gameMode": "plate"
+  },
+  {
+    "plaka": 64,
+    "il": "Sinop",
+    "lat": 41.9961,
+    "lon": 34.8879,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 65,
+    "il": "Sirnak",
+    "lat": 37.5186,
+    "lon": 42.4552,
+    "audioUrl": null,
+    "gameMode": "plate"
+  },
+  {
+    "plaka": 66,
+    "il": "Sivas",
+    "lat": 39.7505,
+    "lon": 37.0175,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 67,
+    "il": "Tekirdag",
+    "lat": 41.0559,
+    "lon": 27.5028,
+    "audioUrl": null,
+    "gameMode": "plate"
+  },
+  {
+    "plaka": 68,
+    "il": "Tokat",
+    "lat": 40.3120,
+    "lon": 36.6027,
+    "audioUrl": null,
+    "gameMode": "plate"
+  },
+  {
+    "plaka": 69,
+    "il": "Trabzon",
+    "lat": 40.9996,
+    "lon": 39.7360,
+    "audioUrl": "audio/trabzon.mp3",
+    "gameMode": "audio"
+  },
+  {
+    "plaka": 70,
+    "il": "Tunceli",
+    "lat": 39.3130,
+    "lon": 39.5298,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 71,
+    "il": "Usak",
+    "lat": 38.6750,
+    "lon": 29.3900,
+    "audioUrl": null,
+    "gameMode": "plate"
+  },
+  {
+    "plaka": 72,
+    "il": "Van",
+    "lat": 38.4890,
+    "lon": 43.3768,
+    "audioUrl": null,
+    "gameMode": "plate"
+  },
+  {
+    "plaka": 73,
+    "il": "Yalova",
+    "lat": 40.6696,
+    "lon": 29.3670,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 74,
+    "il": "Yozgat",
+    "lat": 39.8166,
+    "lon": 34.8213,
+    "audioUrl": null,
+    "gameMode": null
+  },
+  {
+    "plaka": 75,
+    "il": "Zinguldak",
+    "lat": 41.4429,
+    "lon": 31.7820,
+    "audioUrl": null,
+    "gameMode": "plate"
+  }
+]
