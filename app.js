@@ -1,223 +1,122 @@
-// --- CORE GAME VARIABLES ---
+// --- VARIABLES ---
 let map;
 let allProvincesData = []; 
-let geoJsonLayer;       // To store and manipulate the GeoJSON layer
+let geoJsonLayer;       
 let isGameActive = false;
 let currentQuestion = null;
 let feedbackMarker = null;
 
-// Game State Variables
 let gameTimer;          
-let timeLeft = 60;      // Total time for the game (Temporal Component)
+let timeLeft = 60;      
 let score = 0;          
-let lives = 3;          // Total lives as per Assignment Design
+let lives = 3;          
 let roadTripAudio;      
-let blinkingInterval;   // For the calm blinking effect (UX/Interactivity)
-let isMuted = false;    // State for mute functionality
+let isMuted = false;    
 
-// DOM Elements for Intro Sequence
 const introScreen = document.getElementById('intro-screen');
 const introContent = document.getElementById('intro-content');
 
 
 // --- INITIALIZATION ---
 
-/**
- * Initializes the Leaflet map, focusing on Turkey.
- */
 function initializeMap() {
-    // Zoom set to 6 for better boundary visibility 
-    map = L.map('map').setView([39.0, 35.0], 6); 
+    // Initialize Leaflet Map
+    map = L.map('map', {
+        center: [39.0, 35.0],
+        zoom: 6,
+        zoomControl: false,
+        attributionControl: false
+    });
 
-    // Add OpenStreetMap tile layer (Base Map)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        minZoom: 5, 
-        maxZoom: 10 
+    // Invisible tile layer for technical stability
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+        opacity: 0 
     }).addTo(map);
 
-    console.log("GIS Core: Leaflet Map Initialized.");
+    // Restrict map to Turkey
+    map.setMaxBounds([[35, 25], [43, 45]]);
+    map.setMinZoom(5);
 }
 
-/**
- * Loads province center data (game logic) and GeoJSON (polygons).
- */
 function loadProvinceData() {
-    // 1. Load GeoJSON (Polygon Boundaries)
+    // 1. Load GeoJSON
     d3.json('data/turkey_provinces.geojson')
         .then(geojson => {
-            console.log(`GIS Data Loaded: Found ${geojson.features.length} GeoJSON features.`);
+            console.log("GeoJSON Loaded.");
             addGeoJsonToMap(geojson);
         })
-        .catch(error => {
-            console.error('ERROR: Could not load turkey_provinces.geojson. Check file path.', error);
+        .catch(err => {
+            console.error("GeoJSON Failed!", err);
+            alert("Map data failed to load. Check console.");
         });
 
-    // 2. Load center and mode data (required for plaka/audio mode coordinates)
+    // 2. Load Game Data
     d3.json('data/provinces.json') 
         .then(data => {
             allProvincesData = data;
-            console.log(`Game Data Loaded: Found ${allProvincesData.length} province centers/modes.`);
+            console.log("Game Data Loaded.");
         })
-        .catch(error => {
-            console.error('ERROR: Could not load provinces.json. Check file path.', error);
-        });
+        .catch(err => console.error("provinces.json failed!", err));
 }
 
-/**
- * Adds the GeoJSON boundaries to the map and defines interaction.
- */
 function addGeoJsonToMap(geojson) {
-    // Default styling for provinces
-    function style(feature) {
-        return {
-            fillColor: '#3498db', // Default blue fill
-            weight: 1.5,
-            opacity: 1,
-            color: 'white', // White border between provinces
-            fillOpacity: 0.5
-        };
-    }
-    
-    // Defines events when interacting with a GeoJSON feature (polygon)
     function onEachFeature(feature, layer) {
-        layer.provinceName = feature.properties.name; 
-        
-        layer.on({
-            mouseover: highlightFeature,
-            mouseout: resetHighlight,
-            click: handlePolygonClick // Call the specific click handler
-        });
+        // Store name from GeoJSON properties
+        layer.provinceName = feature.properties.name || feature.properties.NAME_1 || feature.properties.ad; 
+        layer.on({ click: handlePolygonClick });
     }
 
     geoJsonLayer = L.geoJson(geojson, {
-        style: style,
         onEachFeature: onEachFeature
     }).addTo(map);
-
-    startBlinkingAnimation(); 
-}
-
-// --- INTERACTION HANDLERS (Highlighting/Blinking) ---
-
-function highlightFeature(e) {
-    const layer = e.target;
-    layer.setStyle({
-        weight: 3, 
-        color: '#666',
-        fillOpacity: 0.7
-    });
-
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
-    }
-}
-
-function resetHighlight(e) {
-    if (geoJsonLayer) {
-        geoJsonLayer.resetStyle(e.target);
-    }
-}
-
-function startBlinkingAnimation() {
-    const provinceLayers = geoJsonLayer.getLayers();
-    if (provinceLayers.length === 0) return;
     
-    if (blinkingInterval) {
-        clearInterval(blinkingInterval);
-        provinceLayers.forEach(layer => geoJsonLayer.resetStyle(layer)); 
-    }
-
-    // Select a random province to blink
-    const randomIndex = Math.floor(Math.random() * provinceLayers.length);
-    const blinkingLayer = provinceLayers[randomIndex];
-    let isBlinking = false;
-
-    blinkingInterval = setInterval(() => {
-        if (isBlinking) {
-            geoJsonLayer.resetStyle(blinkingLayer); 
-        } else {
-            blinkingLayer.setStyle({
-                fillColor: '#f39c12', // Orange/yellow for blinking
-                fillOpacity: 0.7,
-                weight: 2
-            });
-        }
-        isBlinking = !isBlinking;
-    }, 800); 
+    // Start Intro
+    startIntroSequence();
 }
 
 
-// --- INTRO & CINEMATIC SEQUENCE ---
+// --- INTRO & FLOW ---
 
 function startIntroSequence() {
-    // Step 1: Speaker Warning 
-    introContent.innerHTML = `
-        <span class="speaker-text">🔊</span>
-        <p style="opacity: 0; animation: fade-in-grow 1.5s forwards 0.5s;">Please ensure your speaker is on.</p>
-    `;
+    if(introContent) {
+        introContent.innerHTML = `<div style="font-size:3em;">🔊 <br>Please turn on your sound</div>`;
+    }
     
-    roadTripAudio = new Audio('audio/road_trip_song.mp3'); 
-    roadTripAudio.volume = isMuted ? 0 : 0.3; // Respect mute state
+    // Audio Setup
+    roadTripAudio = new Audio('audio/road_trip_song.mp3');
+    roadTripAudio.volume = 0.3;
     roadTripAudio.loop = true;
-    roadTripAudio.play().catch(e => console.error("Audio Play Error: Road trip song not found or blocked."));
+    roadTripAudio.play().catch(() => console.log("Autoplay blocked."));
 
+    // Transition to Start Screen
     setTimeout(() => {
-        // Step 2: Fade to road view/image
-        introContent.innerHTML = `
-            <img id="desert-view" src="images/desert_view.jpg" alt="Desert Road Trip" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: opacity 1s;">
-            <div id="road-sign-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0;"></div>
-        `;
-        document.getElementById('desert-view').style.opacity = 1; 
-
-        // Fade out music
-        let volumeLevel = roadTripAudio.volume;
-        if (!isMuted) {
-            const fadeInterval = setInterval(() => {
-                volumeLevel = Math.max(0, volumeLevel - 0.03); 
-                roadTripAudio.volume = volumeLevel;
-                if (volumeLevel <= 0) {
-                    clearInterval(fadeInterval);
-                    roadTripAudio.pause();
-                    showRoadSign(); 
-                }
-            }, 200);
-        } else {
-             roadTripAudio.pause();
-             showRoadSign();
-        }
-
-    }, 3000); 
-}
-
-function showRoadSign() {
-    const roadSignContainer = document.getElementById('road-sign-container');
-    roadSignContainer.innerHTML = `<img src="images/road_sign.png" alt="Plate Sign" style="width: 80vw; max-width: 600px; animation: approach-and-net 3s forwards;">`;
-    roadSignContainer.style.opacity = 1; 
-    
-    setTimeout(startCountdown, 3000); 
+        if(introScreen) introScreen.classList.add('hidden');
+        const modal = document.getElementById('modal');
+        if(modal) modal.classList.add('active');
+        const promptBar = document.getElementById('prompt-bar');
+        if(promptBar) promptBar.innerHTML = "Game Ready...";
+    }, 3000);
 }
 
 function startCountdown() {
+    document.getElementById('modal').classList.remove('active');
+    
+    if(introScreen) {
+        introScreen.classList.remove('hidden');
+        introScreen.style.background = "rgba(0,0,0,0.8)"; 
+    }
+    
     let count = 3;
-    introContent.innerHTML = `<span class="countdown-number">${count}</span>`;
+    if(introContent) introContent.innerHTML = `<div class="countdown-number">${count}</div>`;
     
     const countdownInterval = setInterval(() => {
         count--;
         if (count > 0) {
-            introContent.innerHTML = `<span class="countdown-number">${count}</span>`;
+            if(introContent) introContent.innerHTML = `<div class="countdown-number">${count}</div>`;
         } else {
             clearInterval(countdownInterval);
-            introContent.innerHTML = '';
-            
-            setTimeout(() => {
-                introScreen.style.opacity = 0;
-                setTimeout(() => {
-                    introScreen.classList.remove('active');
-                    document.getElementById('modal').classList.add('active'); 
-                }, 1000); 
-                
-            }, 300); 
+            if(introScreen) introScreen.classList.add('hidden');
+            realGameStart(); 
         }
     }, 1000);
 }
@@ -225,283 +124,159 @@ function startCountdown() {
 
 // --- GAME LOGIC ---
 
-/**
- * Resets stats, stops blinking, starts the timer, and loads the first question.
- */
-function startGame() {
-    if (blinkingInterval) {
-        clearInterval(blinkingInterval);
-        geoJsonLayer.eachLayer(layer => geoJsonLayer.resetStyle(layer));
+function triggerGameStart() {
+    // Fade out music
+    if(roadTripAudio) {
+        let vol = roadTripAudio.volume;
+        let fade = setInterval(() => {
+            if(vol > 0.05) { vol -= 0.05; roadTripAudio.volume = vol; }
+            else { clearInterval(fade); roadTripAudio.pause(); }
+        }, 100);
     }
-    
+    startCountdown();
+}
+
+function realGameStart() {
     score = 0;
     lives = 3;
     timeLeft = 60;
-    
-    document.getElementById('modal').classList.remove('active');
     isGameActive = true;
     
-    gameTimer = setInterval(updateTimer, 1000); 
+    if (geoJsonLayer) geoJsonLayer.resetStyle();
 
+    gameTimer = setInterval(updateTimer, 1000); 
     loadNewQuestion();
     updateStatsDisplay();
-    console.log("Game Started. Timer is running.");
 }
 
-/**
- * Updates the Timer, Score, and Lives display on the screen.
- */
 function updateStatsDisplay() {
-    document.getElementById('timer').textContent = `Time: ${timeLeft}`;
-    document.getElementById('score').textContent = `Score: ${score}`;
+    const timerEl = document.getElementById('timer');
+    const scoreEl = document.getElementById('score');
+    const livesEl = document.getElementById('lives');
+
+    if(timerEl) timerEl.innerText = `Time: ${timeLeft}`;
+    if(scoreEl) scoreEl.innerText = `Score: ${score}`;
     
-    let livesDisplay = '';
-    for (let i = 0; i < 3; i++) {
-        livesDisplay += (i < lives) ? '♥ ' : '♡ ';
-    }
-    document.getElementById('lives').textContent = `Lives: ${livesDisplay}`;
+    let hearts = "";
+    for(let i=0; i<lives; i++) hearts += "❤️ ";
+    if(livesEl) livesEl.innerText = `Lives: ${hearts}`;
 }
 
-/**
- * Decrements the timer every second and checks for game over condition.
- */
 function updateTimer() {
-    timeLeft--; 
-    updateStatsDisplay(); 
-
+    timeLeft--;
+    updateStatsDisplay();
     if (timeLeft <= 0) {
-        clearInterval(gameTimer); 
-        endGame('time');
+        clearInterval(gameTimer);
+        endGame('Time is Up!');
     }
 }
 
-/**
- * Mute/Unmute toggle functionality.
- */
-function toggleMute() {
-    isMuted = !isMuted;
-    const button = document.getElementById('mute-button');
-    
-    if (isMuted) {
-        if (roadTripAudio) roadTripAudio.volume = 0;
-        // Logic to mute other ongoing game audio if needed
-        button.textContent = "🔊 Unmute"; 
-    } else {
-        if (roadTripAudio) roadTripAudio.volume = 0.3; // Restore volume
-        button.textContent = "🔇 Mute"; 
-    }
-}
-
-/**
- * Selects a random province only if its gameMode is defined.
- */
 function loadNewQuestion() {
     if (!isGameActive || allProvincesData.length === 0) return;
 
-    // Filter provinces to only include those where gameMode is explicitly set ('audio' or 'plate')
-    const availableProvinces = allProvincesData.filter(p => p.gameMode === 'audio' || p.gameMode === 'plate');
+    // Filter valid game modes
+    const validProvinces = allProvincesData.filter(p => p.gameMode === 'audio' || p.gameMode === 'plate');
+    if (validProvinces.length === 0) return;
 
-    if (availableProvinces.length === 0) {
-        document.getElementById('prompt-bar').innerHTML = "<p style='color:red;'>ERROR: No game modes defined in provinces.json!</p>";
-        isGameActive = false;
-        clearInterval(gameTimer);
-        return;
-    }
-
-    // 1. Select a random province from the AVAILABLE list
-    const randomIndex = Math.floor(Math.random() * availableProvinces.length);
-    currentQuestion = availableProvinces[randomIndex]; 
+    const randomIndex = Math.floor(Math.random() * validProvinces.length);
+    currentQuestion = validProvinces[randomIndex]; 
     
-    // Determine the mode from the data
-    const mode = currentQuestion.gameMode; 
     const promptBar = document.getElementById('prompt-bar');
-
-    // Reset prompt bar style
     promptBar.style.backgroundColor = '#ecf0f1';
-    promptBar.style.color = 'black';
+    promptBar.style.color = '#2c3e50';
 
-
-    if (mode === 'plate') {
-        // --- PLATE MODE ---
-        promptBar.innerHTML = `
-            <p>Question: Which province has this plate number? </p>
-            <span class="question-data">PLATE: ${currentQuestion.plaka}</span>
-        `;
-    } else if (mode === 'audio') {
-        // --- MELODY (AUDIO) MODE ---
-        promptBar.innerHTML = `
-            <p>Question: Where is this melody from?</p> 
-            <button id="play-melody-button" class="question-data">PLAY MELODY 🎵</button>
-        `;
-        
-        // Add event listener for audio playback
-        document.getElementById('play-melody-button').addEventListener('click', () => {
-             const audio = new Audio(currentQuestion.audioUrl);
-             audio.volume = isMuted ? 0 : 1; // Respect mute state for question audio
-             audio.play().catch(e => console.error("Audio Play Error: Check audio file path."));
-        });
-    }
-    
-    console.log(`New Question: Mode: ${mode}, Correct Province: ${currentQuestion.il}`);
-}
-
-
-/**
- * Main handler for clicks on any province polygon (GeoJSON click).
- */
-function handlePolygonClick(e) {
-    if (!isGameActive || !currentQuestion) {
-        document.getElementById('modal').classList.add('active'); 
-        return;
-    }
-    
-    const clickedProvinceName = e.target.provinceName;
-    const clickedLatLng = e.latlng;
-    
-    const correctProvinceData = allProvincesData.find(p => p.il === currentQuestion.il);
-    
-    if (!correctProvinceData) {
-        console.error("ERROR: Correct province data not found in provinces.json for comparison.");
-        return;
-    }
-
-    const trueLatLon = L.latLng(correctProvinceData.lat, correctProvinceData.lon);
-    const distanceMeters = clickedLatLng.distanceTo(trueLatLon);
-    const correctThreshold = 100000; // 100 km limit
-
-    // --- SCORING LOGIC ---
-    if (clickedProvinceName === correctProvinceData.il) {
-        
-        // Score is inversely proportional to the error distance
-        let points = Math.round(500 * (1 - (distanceMeters / correctThreshold)));
-        points = Math.max(50, points); 
-        score += points;
-
-        // Visual feedback based on the mode
-        if (currentQuestion.gameMode === 'audio') {
-            // Success animation for Audio Mode
-            showProvinceSuccess(correctProvinceData); 
-        } else {
-            // Simple feedback for Plate Mode
-            displayFeedback(`✅ CORRECT! +${points} Points. Error: ${Math.round(distanceMeters / 1000)} km`, '#2ecc71');
-            showFeedbackMarker(trueLatLon, true);
-            // New question loads via displayFeedback()
-        }
-
+    if (currentQuestion.gameMode === 'plate') {
+        promptBar.innerHTML = `Question: Which province? <span class="question-data">PLATE: ${currentQuestion.plaka}</span>`;
     } else {
-        // Incorrect Answer
+        promptBar.innerHTML = `Question: Whose melody is this? <button id="play-melody-button">PLAY 🎵</button>`;
+        setTimeout(() => {
+            const btn = document.getElementById('play-melody-button');
+            if(btn) {
+                btn.addEventListener('click', () => {
+                    const audio = new Audio(currentQuestion.audioUrl);
+                    if(!isMuted) audio.play();
+                });
+            }
+        }, 0);
+    }
+}
+
+function handlePolygonClick(e) {
+    if (!isGameActive || !currentQuestion) return;
+    
+    const clickedName = e.target.provinceName;
+    const isCorrect = (clickedName === currentQuestion.il);
+
+    if (isCorrect) {
+        score += 500;
+        displayFeedback("✅ CORRECT!", "#27ae60");
+        e.target.setStyle({ fill: '#2ecc71', fillColor: '#2ecc71' }); 
+    } else {
         lives--;
-        score = Math.max(0, score - 50); 
+        score -= 50;
+        displayFeedback("❌ WRONG!", "#c0392b");
+        e.target.setStyle({ fill: '#e74c3c', fillColor: '#e74c3c' });
         
-        displayFeedback(`❌ INCORRECT! -1 Life. Error: ${Math.round(distanceMeters / 1000)} km. Try again.`, '#e74c3c'); 
-        showFeedbackMarker(trueLatLon, false);
-        
-        if (lives <= 0) {
-            endGame('lives');
-            return;
-        }
+        if (lives <= 0) endGame('Game Over!');
     }
     
-    updateStatsDisplay();
-}
-
-
-/**
- * Displays the successful province name/plate with a growing animation.
- * Used for Audio Mode success visualization.
- */
-function showProvinceSuccess(provinceData) {
-    const provinceNamePlate = `${provinceData.plaka} ${provinceData.il}`;
-    
-    const successOverlay = document.createElement('div');
-    successOverlay.id = 'success-overlay';
-    successOverlay.innerHTML = `<span class="success-text">${provinceNamePlate}</span>`;
-    
-    document.body.appendChild(successOverlay);
-
-    // After animation, remove the text and load the next question
     setTimeout(() => {
-        if(document.getElementById('success-overlay')) {
-             document.body.removeChild(successOverlay);
+        if(isGameActive && geoJsonLayer) {
+            geoJsonLayer.resetStyle(e.target);
+            loadNewQuestion();
+            updateStatsDisplay();
         }
-        
-        loadNewQuestion(); 
-        
-    }, 2500); // 2.5 seconds for the success animation
+    }, 1000);
 }
 
-
-/**
- * Displays a temporary marker at the true location for feedback.
- */
-function showFeedbackMarker(latlng, isCorrect) {
-    if (feedbackMarker) {
-        map.removeLayer(feedbackMarker);
+function displayFeedback(msg, color) {
+    const bar = document.getElementById('prompt-bar');
+    if(bar) {
+        bar.innerHTML = msg;
+        bar.style.backgroundColor = color;
+        bar.style.color = 'white';
     }
-    
-    const color = isCorrect ? '#2ecc71' : '#e74c3c';
-    const iconHtml = `<div style="background-color:${color}; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white;"></div>`;
-    const customIcon = L.divIcon({
-        className: 'custom-feedback-icon',
-        html: iconHtml,
-        iconSize: [20, 20],
-        iconAnchor: [10, 10]
-    });
-    
-    feedbackMarker = L.marker(latlng, {icon: customIcon}).addTo(map);
-
-    setTimeout(() => {
-        if (feedbackMarker) {
-            map.removeLayer(feedbackMarker);
-            feedbackMarker = null;
-        }
-    }, 2000);
 }
 
-/**
- * Temporarily displays feedback message in the prompt bar.
- */
-function displayFeedback(message, color) {
-    const promptBar = document.getElementById('prompt-bar');
-    promptBar.style.backgroundColor = color;
-    promptBar.style.color = 'white';
-    promptBar.innerHTML = `<p>${message}</p>`;
-
-    // After 1.5 seconds, remove the feedback and load the next question
-    setTimeout(() => {
-        if (currentQuestion.gameMode !== 'audio') { // If success animation didn't load the next question
-            loadNewQuestion(); 
-        }
-    }, 1500); 
-}
-
-
-/**
- * Stops the game and displays the final score modal.
- */
+// --- FIXED END GAME FUNCTION ---
 function endGame(reason) {
     isGameActive = false;
     clearInterval(gameTimer);
     
     const modal = document.getElementById('modal');
-    modal.querySelector('h2').textContent = (reason === 'time') ? "TIME'S UP! GAME OVER!" : "GAME OVER - LIVES DEPLETED!";
-    modal.querySelector('p').innerHTML = `Your Final Score: <b>${score}</b>`;
-    modal.querySelector('#start-button').textContent = "Play Again";
-    
-    modal.classList.add('active'); 
+    if(modal) {
+        modal.style.display = 'flex'; // Ensure flex display
+        modal.classList.add('active');
+        
+        const h2 = modal.querySelector('h2');
+        if(h2) h2.innerText = reason;
+        
+        const p = modal.querySelector('p');
+        if(p) p.innerText = `Final Score: ${score}`;
+        
+        const btn = document.getElementById('start-button');
+        if(btn) btn.innerText = "Play Again";
+    }
 }
 
-
-// --- APPLICATION ENTRY POINT ---
+// --- ENTRY POINT ---
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Core GIS/Data Initialization
     initializeMap();
     loadProvinceData();
     
-    // 2. Event Listeners
-    document.getElementById('start-button').addEventListener('click', startGame);
-    document.getElementById('mute-button').addEventListener('click', toggleMute); // MUTE EKLENDİ
-    
-    // 3. Start the cinematic Intro sequence
-    startIntroSequence();
+    // Start Button Listener
+    const startBtn = document.getElementById('start-button');
+    if(startBtn) {
+        startBtn.addEventListener('click', triggerGameStart);
+    }
+
+    // Mute Button Listener
+    const muteBtn = document.getElementById('mute-button');
+    if(muteBtn) {
+        muteBtn.addEventListener('click', () => {
+            isMuted = !isMuted;
+            muteBtn.innerText = isMuted ? "🔇" : "🔊";
+            if(roadTripAudio) roadTripAudio.muted = isMuted;
+        });
+    }
 });

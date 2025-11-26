@@ -3,162 +3,292 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Prevent scrolling */
-    background-color: #f4f4f4;
+    overflow: hidden;
+    background-color: #2c3e50; /* Dark Theme Background */
 }
 
-/* Map must take up the main viewport area */
+/* Map Container */
 #map {
-    height: calc(100vh - 120px); /* Full height minus header and prompt bar */
+    height: calc(100vh - 120px);
     width: 100%;
     z-index: 0;
-    border-top: 2px solid #ddd;
+    background-color: #aadaff; /* Sea Color (Acts as background for the solid provinces) */
+}
+/* Target Leaflet Interactive paths (The Province Polygons) */
+.leaflet-interactive {
+    stroke: rgb(201, 185, 255) !important;       /* Black Borders */
+    stroke-width: 2px !important;   /* Border Thickness */
+    fill: #88c7ff;                  /* Solid Dark Grey Fill */
+    fill-opacity: 1 !important;     /* Fully Opaque */
+    
+    /* GLOW EFFECT:  outer shine */
+    filter: drop-shadow(0 0 10px rgba(255, 176, 225, 1)); 
+    
+    transition: all 0.2s ease-out; /* Smooth hover transition */
 }
 
-/* Stats Bar Styling */
+/* Hover Effect */
+.leaflet-interactive:hover {
+    stroke-width: 3px !important;
+    fill: #e4b6ff !important; /* Slightly lighter grey on hover */
+    filter: drop-shadow(0 0 20px rgba(0, 255, 255, 1)); /* Blue shine on hover */
+    cursor: pointer;
+    z-index: 1000;
+}
+
+
+/* --- UI COMPONENTS (RICH DESIGN) --- */
+
+/* Top Stats Bar */
 #stats-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 20px;
-    background-color: #2c3e50; /* Darker blue/gray for professionalism */
+    padding: 10px 30px;
+    background-color: #180022;
     color: white;
-    font-size: 0.9em;
-    font-weight: 600;
-}
-
-.stats-container span {
-    margin-right: 15px;
-}
-
-/* Prompt Bar Styling (For Questions and Feedback) */
-#prompt-bar {
-    background-color: #ecf0f1;
-    padding: 10px 20px;
-    text-align: center;
     font-size: 1.2em;
     font-weight: bold;
-    min-height: 30px;
-    transition: background-color 0.5s, color 0.5s; /* Smooth feedback transition */
+    box-shadow: 0 4px 6px rgba(46, 0, 55, 0.3);
+}
+
+/* Question/Prompt Bar */
+#prompt-bar {
+    background-color: #3b004f;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.4em; /* Large readable text */
+    font-weight: bold;
+    min-height: 50px;
+    color: #c7afcc;
+    border-bottom: 4px solid #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
 }
 
 .question-data {
-    font-size: 1.5em;
-    color: #e74c3c; /* Highlight question data */
+    font-size: 1.5em; 
+    color: #ffffff;
+    font-weight: 800;
 }
 
-#play-melody-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-}
-
-/* --- MODAL STYLES --- */
+/* Modal (Start/Game Over Screen) */
 #modal {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(44, 62, 80, 0.95);
-    color: white;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(125, 0, 0, 0.9);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 2000; /* Must be above map and other elements */
+    color: white;
+    z-index: 5000; /* High z-index to sit on top */
 }
 
-#modal:not(.active) {
-    display: none;
-}
+#modal h2 { font-size: 3em; margin-bottom: 20px; }
+#modal p { font-size: 1.5em; }
 
+#modal:not(.active) { display: none; }
+
+/* Start Button */
 #start-button {
-    padding: 12px 30px;
+    padding: 20px 50px;
+    font-size: 2em;
+    margin-top: 30px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    pointer-events: auto; /* Ensure clickable */
+}
+#start-button:hover { transform: scale(1.05); background-color: #2ecc71; }
+
+/* --- INTRO & COUNTDOWN ANIMATIONS --- */
+#intro-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: black; z-index: 9999;
+    display: flex; justify-content: center; align-items: center;
+    color: white;
+    transition: opacity 1s;
+    pointer-events: auto;
+}
+
+#intro-screen.hidden { 
+    opacity: 0; 
+    pointer-events: none; /* CRITICAL: Allows clicking through to the modal when hidden */
+}
+
+/* Large Countdown Numbers */
+.countdown-number {
+    font-size: 15em; 
+    font-weight: bold;
+    color: #f1c40f;
+    animation: pulse 0.5s infinite alternate;
+}
+      
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+#play-melody-button {
     font-size: 1.2em;
-    margin-top: 20px;
-    background-color: #2ecc71;
+    padding: 10px 20px;
+    background-color: #3498db;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+}/* --- BASE STYLES --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #2c3e50; /* Dark Theme Background */
 }
 
-#start-button:hover {
-    background-color: #27ae60;
+/* Map Container */
+#map {
+    height: calc(100vh - 120px);
+    width: 100%;
+    z-index: 0;
+    background-color: #aadaff; /* Sea Color (Acts as background for the solid provinces) */
 }
 
-/* --- INTRO SEQUENCE STYLES & ANIMATIONS --- */
-#intro-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: black;
+/* --- MAP VISUALIZATION (YOUR SPECIFIC REQUEST) --- */
+/* Target Leaflet Interactive paths (The Province Polygons) */
+.leaflet-interactive {
+    stroke: black !important;       /* Black Borders */
+    stroke-width: 2px !important;   /* Border Thickness */
+    fill: #555555;                  /* Solid Dark Grey Fill */
+    fill-opacity: 1 !important;     /* Fully Opaque */
+    
+    /* GLOW EFFECT: Golden/Yellow outer shine */
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6)); 
+    
+    transition: all 0.2s ease-out; /* Smooth hover transition */
+}
+
+/* Hover Effect */
+.leaflet-interactive:hover {
+    stroke-width: 3px !important;
+    fill: #777 !important; /* Slightly lighter grey on hover */
+    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 1)); /* Blue shine on hover */
+    cursor: pointer;
+    z-index: 1000;
+}
+
+
+/* --- UI COMPONENTS (RICH DESIGN) --- */
+
+/* Top Stats Bar */
+#stats-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    background-color: #34495e;
     color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+/* Question/Prompt Bar */
+#prompt-bar {
+    background-color: #ecf0f1;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.4em; /* Large readable text */
+    font-weight: bold;
+    min-height: 50px;
+    color: #2c3e50;
+    border-bottom: 4px solid #bdc3c7;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; 
-    opacity: 1;
-    transition: opacity 1s ease-out; 
-    overflow: hidden;
+    gap: 15px;
 }
 
-#intro-screen:not(.active) {
-    display: none;
+.question-data {
+    font-size: 1.5em; 
+    color: #e74c3c;
+    font-weight: 800;
 }
 
-/* Speaker Warning Gradient Text Effect */
-.speaker-text {
-    background: linear-gradient(45deg, #eee, #aaa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 3em;
-    opacity: 0;
-    animation: fade-in-grow 1.5s forwards 0.5s;
-    transition: opacity 0.5s;
+/* Modal (Start/Game Over Screen) */
+#modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    z-index: 5000; /* High z-index to sit on top */
 }
 
-/* Placeholder for video/image background (Pikap/Çöl) */
-#desert-view {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0; /* JS will fade this in */
+#modal h2 { font-size: 3em; margin-bottom: 20px; }
+#modal p { font-size: 1.5em; }
+
+#modal:not(.active) { display: none; }
+
+/* Start Button */
+#start-button {
+    padding: 20px 50px;
+    font-size: 2em;
+    margin-top: 30px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    pointer-events: auto; /* Ensure clickable */
+}
+#start-button:hover { transform: scale(1.05); background-color: #2ecc71; }
+
+/* --- INTRO & COUNTDOWN ANIMATIONS --- */
+#intro-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: black; z-index: 9999;
+    display: flex; justify-content: center; align-items: center;
+    color: white;
     transition: opacity 1s;
+    pointer-events: auto;
 }
 
-/* Geri Sayım */
+#intro-screen.hidden { 
+    opacity: 0; 
+    pointer-events: none; /* CRITICAL: Allows clicking through to the modal when hidden */
+}
+
+/* Large Countdown Numbers */
 .countdown-number {
-    font-size: 10em;
+    font-size: 15em; 
     font-weight: bold;
+    color: #f1c40f;
     animation: pulse 0.5s infinite alternate;
 }
-
-/* Yol Tabelası Yaklaşma Animasyonu */
-@keyframes approach-and-net {
-    0% { transform: scale(0.1); opacity: 0; filter: blur(10px); }
-    80% { opacity: 1; filter: blur(0); }
-    100% { transform: scale(1.5); opacity: 0.8; }
-}
-
-/* Animasyon Keyframes */
-@keyframes fade-in-grow {
-    from { opacity: 0; transform: scale(0.5); }
-    to { opacity: 1; transform: scale(1.0); }
-}
-
 @keyframes pulse {
     from { transform: scale(1); }
     to { transform: scale(1.1); }
+}
+
+#play-melody-button {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
