@@ -1781,7 +1781,7 @@
         ]
       },
       "properties": { "name": "Batman" },
-      "id": 14,
+      "id": 72,
       "type": "Feature"
     },
     {
@@ -1820,7 +1820,7 @@
         ]
       },
       "properties": { "name": "Bayburt" },
-      "id": 15,
+      "id": 69,
       "type": "Feature"
     },
     {
@@ -3469,7 +3469,7 @@
         ]
       },
       "properties": { "name": "Igdir" },
-      "id": 38,
+      "id": 76,
       "type": "Feature"
     },
     {
@@ -4763,7 +4763,7 @@
         ]
       },
       "properties": { "name": "Kilis" },
-      "id": 48,
+      "id": 79,
       "type": "Feature"
     },
     {
@@ -4805,7 +4805,7 @@
         ]
       },
       "properties": { "name": "Kirikkale" },
-      "id": 49,
+      "id": 71,
       "type": "Feature"
     },
     {
@@ -5763,7 +5763,8 @@
             ]
           ],
           [
-            [              [ 28.93486022949247, 36.70875167846691 ],
+            [
+              [ 28.93486022949247, 36.70875167846691 ],
               [ 28.935695648193416, 36.70375061035156 ],
               [ 28.932081222534407, 36.698749542236555 ],
               [ 28.933473587036133, 36.707359313965014 ],
@@ -7841,7 +7842,7 @@
         ]
       },
       "properties": { "name": "Van" },
-      "id": 78,
+      "id": 65,
       "type": "Feature"
     },
     {
@@ -7969,8 +7970,8 @@
           ]
         ]
       },
-      "properties": { "name": "Zinguldak" },
-      "id": 81,
+      "properties": { "name": "Zonguldak" },
+      "id": 67,
       "type": "Feature"
     }
   ]}
