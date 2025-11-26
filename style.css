@@ -1,294 +1,200 @@
-/* --- BASE STYLES --- */
+/* Course: GMT 458 - Internet Based Geographical Information Systems
+   Project: Hometown Game (Turkey Trip)
+   Theme: Wild Nature / Adventure Style
+*/
+
+/* --- 1. FONTS & GLOBAL SETTINGS --- */
+@import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Rye', serif; 
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    background-color: #2c3e50; /* Dark Theme Background */
+    overflow: hidden; 
+    background-color: #2c3e50;
+    text-transform: uppercase; 
 }
 
-/* Map Container */
 #map {
-    height: calc(100vh - 120px);
+    height: 100vh;
     width: 100%;
     z-index: 0;
-    background-color: #aadaff; /* Sea Color (Acts as background for the solid provinces) */
+    background-color: #aadaff; 
 }
-/* Target Leaflet Interactive paths (The Province Polygons) */
+
+/* --- 2. MAP VISUALIZATION --- */
 .leaflet-interactive {
-    stroke: rgb(201, 185, 255) !important;       /* Black Borders */
-    stroke-width: 2px !important;   /* Border Thickness */
-    fill: #88c7ff;                  /* Solid Dark Grey Fill */
-    fill-opacity: 1 !important;     /* Fully Opaque */
-    
-    /* GLOW EFFECT:  outer shine */
-    filter: drop-shadow(0 0 10px rgba(255, 176, 225, 1)); 
-    
-    transition: all 0.2s ease-out; /* Smooth hover transition */
+    stroke: #3e2723 !important; 
+    stroke-width: 2px !important;
+    fill: #f5deb3; 
+    fill-opacity: 1 !important;
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.3));
+    transition: all 0.2s ease-out; 
 }
 
-/* Hover Effect */
 .leaflet-interactive:hover {
-    stroke-width: 3px !important;
-    fill: #e4b6ff !important; /* Slightly lighter grey on hover */
-    filter: drop-shadow(0 0 20px rgba(0, 255, 255, 1)); /* Blue shine on hover */
+    stroke-width: 4px !important;
+    fill: #e67e22 !important; 
+    filter: drop-shadow(0 0 15px rgba(230, 126, 34, 0.8));
     cursor: pointer;
-    z-index: 1000;
+    z-index: 1000; 
 }
 
-
-/* --- UI COMPONENTS (RICH DESIGN) --- */
-
-/* Top Stats Bar */
+/* --- 3. UI - TOP INFO BAR --- */
 #stats-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 30px;
-    background-color: #180022;
-    color: white;
-    font-size: 1.2em;
-    font-weight: bold;
-    box-shadow: 0 4px 6px rgba(46, 0, 55, 0.3);
+    position: fixed; top: 0; left: 0; width: 100%;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 30px; 
+    background-color: rgba(62, 39, 35, 0.95); 
+    border-bottom: 4px solid #e67e22; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    color: #ffca28; 
+    font-size: 1.4em; font-weight: normal; 
+    z-index: 2000; 
+    box-sizing: border-box; 
 }
 
-/* Question/Prompt Bar */
-#prompt-bar {
-    background-color: #3b004f;
-    padding: 15px;
-    text-align: center;
-    font-size: 1.4em; /* Large readable text */
-    font-weight: bold;
-    min-height: 50px;
-    color: #c7afcc;
-    border-bottom: 4px solid #000000;
-    display: flex;
+/* --- 4. QUESTION & GAMEPLAY UI --- */
+#question-container {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 80%; max-width: 600px;
+    background-color: #fff8e1; 
+    border: 4px solid #3e2723; color: #3e2723;
+    padding: 40px; border-radius: 15px;
+    box-shadow: 10px 10px 0px rgba(62, 39, 35, 0.8); 
+    text-align: center; z-index: 3000;
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+    transition: all 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+#question-container.minimized {
+    top: 110px; left: 50%; transform: translate(-50%, 0) scale(0.85);
+    width: auto; padding: 15px 30px; flex-direction: row;
+    background-color: rgba(255, 248, 225, 0.95); border: 2px solid #3e2723;
+}
+#question-container.minimized .instruction-text { display: none; }
+
+.plate-wrapper { position: relative; display: inline-block; width: 300px; }
+.plate-img { width: 100%; border-radius: 5px; border: 2px solid black; }
+.plate-number {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-family: sans-serif; font-weight: bold; font-size: 6rem; color: black;
+}
+
+/* --- 5. BUTTON STYLES --- */
+button {
+    font-family: 'Rye', serif; font-size: 1.5em; padding: 15px 40px;
+    background-color: #e67e22; color: #3e2723; 
+    border: 3px solid #3e2723; border-radius: 10px; cursor: pointer;
+    box-shadow: 4px 4px 0px #3e2723; transition: all 0.1s; text-transform: uppercase;
+}
+button:hover { background-color: #d35400; transform: translate(-2px, -2px); box-shadow: 6px 6px 0px #3e2723; }
+button:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #3e2723; }
+#mute-button { box-shadow: none; border: none; padding: 0; }
+#mute-button:hover { background: none; transform: scale(1.2); box-shadow: none; }
+
+/* --- 6. INTRO & START SCREEN--- */
+
+/* Main Start Screen Container */
+#pre-start-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: url('images/ege-peri.png') no-repeat center 25%;
+    background-size: cover;
+    display: flex; flex-direction: column; 
     justify-content: center;
-    align-items: center;
-    gap: 15px;
+    align-items: center; 
+    z-index: 9999;
+    transition: opacity 1s ease-in-out;
 }
 
-.question-data {
-    font-size: 1.5em; 
-    color: #ffffff;
-    font-weight: 800;
+/* "TURKEY TRIP" Title */
+.pre-start-title { 
+    font-size: 6em; color: #ffca28; 
+    text-shadow: 5px 5px 0px #3e2723, -2px -2px 0 #3e2723, 2px -2px 0 #3e2723, -2px 2px 0 #3e2723, 2px 2px 0 #3e2723;
+    margin: 0; line-height: 1;
 }
 
-/* Modal (Start/Game Over Screen) */
-#modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(125, 0, 0, 0.9);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    z-index: 5000; /* High z-index to sit on top */
+/* "GEO GAME ADVENTURE" Subtitle */
+.pre-start-subtitle {
+    font-size: 2.5em; color: white;
+    text-shadow: 3px 3px 0px #3e2723;
+    margin-top: 10px; margin-bottom: 40px;
 }
-
-#modal h2 { font-size: 3em; margin-bottom: 20px; }
-#modal p { font-size: 1.5em; }
-
-#modal:not(.active) { display: none; }
 
 /* Start Button */
-#start-button {
-    padding: 20px 50px;
-    font-size: 2em;
-    margin-top: 30px;
-    background-color: #27ae60;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform 0.2s;
-    pointer-events: auto; /* Ensure clickable */
+#init-btn {
+    background-color: #e67e22; color: #3e2723;
+    border: 4px solid #3e2723; font-size: 2.5em;
+    padding: 20px 60px; border-radius: 50px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
-#start-button:hover { transform: scale(1.05); background-color: #2ecc71; }
 
-/* --- INTRO & COUNTDOWN ANIMATIONS --- */
-#intro-screen {
+/* Instruction Text (Phase 2) */
+.instruction-text-overlay {
+    font-size: 2.5em; color: #fff;
+    text-align: center; width: 80%;
+    text-shadow: 3px 3px 0px #000;
+    background: rgba(0, 0, 0, 0.6); /* Readability */
+    padding: 30px; border-radius: 20px;
+    border: 3px solid #e67e22;
+    display: none; /* Initially hidden */
+    animation: fadeIn 1s;
+}
+
+/* --- 7. GAME OVER SCREEN --- */
+#game-over-screen {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+    background: rgba(30, 15, 10, 0.95); display: none; 
+    flex-direction: column; justify-content: center; align-items: center;
+    z-index: 9999; color: white;
+}
+#game-over-screen h1 { font-size: 5em; color: #e74c3c; text-shadow: 0 0 20px red; margin-bottom: 20px; }
+
+/* --- 8. ANIMATIONS & EFFECTS --- */
+#badge-collection { display: flex; align-items: center; gap: 5px; margin-right: 20px; height: 40px; }
+.mini-badge { width: 35px; height: 35px; object-fit: contain; filter: drop-shadow(0 0 5px gold); animation: popInBadge 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+@keyframes popInBadge { from { transform: scale(0); } to { transform: scale(1); } }
+
+/* Large Badge Overlay */
+#badge-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: black; z-index: 9999;
-    display: flex; justify-content: center; align-items: center;
-    color: white;
-    transition: opacity 1s;
-    pointer-events: auto;
+    background: rgba(0,0,0,0.8); z-index: 6000;
+    display: none; flex-direction: column; 
+    justify-content: center; align-items: center;
+}
+#badge-overlay.active { display: flex; animation: popInBadge 0.5s; }
+.badge-img-large { width: 300px; height: 300px; filter: drop-shadow(0 0 20px gold); }
+.badge-text { font-size: 3em; color: gold; margin-top: 20px; text-shadow: 2px 2px 0 black; }
+
+/* Flying Animation Class */
+.flying-badge {
+    position: fixed; z-index: 7000; width: 300px; height: 300px;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    object-fit: contain; transition: all 1s ease-in-out; pointer-events: none;
 }
 
-#intro-screen.hidden { 
-    opacity: 0; 
-    pointer-events: none; /* CRITICAL: Allows clicking through to the modal when hidden */
-}
+.floating-score { position: fixed; font-size: 2em; font-weight: bold; color: #f1c40f; pointer-events: none; z-index: 4000; animation: floatUp 1.5s ease-out forwards; text-shadow: 2px 2px 0 #000; }
+@keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100px); opacity: 0; } }
 
-/* Large Countdown Numbers */
-.countdown-number {
-    font-size: 15em; 
-    font-weight: bold;
-    color: #f1c40f;
-    animation: pulse 0.5s infinite alternate;
-}
-      
-@keyframes pulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.1); }
-}
+.shockwave { position: fixed; width: 20px; height: 20px; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 3500; animation: expandRipple 1s ease-out forwards; }
+@keyframes expandRipple { from { width: 0; height: 0; opacity: 0.8; } to { width: 300px; height: 300px; opacity: 0; } }
 
-#play-melody-button {
-    font-size: 1.2em;
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}/* --- BASE STYLES --- */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #2c3e50; /* Dark Theme Background */
-}
+.shake-screen { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; box-shadow: inset 0 0 50px rgba(255, 0, 0, 0.5); }
+@keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
 
-/* Map Container */
-#map {
-    height: calc(100vh - 120px);
-    width: 100%;
-    z-index: 0;
-    background-color: #aadaff; /* Sea Color (Acts as background for the solid provinces) */
-}
+.earthquake-mode { animation: earthquake 0.1s infinite; box-shadow: inset 0 0 100px rgba(255, 0, 0, 0.8); }
+@keyframes earthquake { 0% { transform: translate(2px, 1px) rotate(0deg); } 25% { transform: translate(-1px, -2px) rotate(-1deg); } 50% { transform: translate(-3px, 0px) rotate(1deg); } 75% { transform: translate(1px, 2px) rotate(0deg); } }
 
-/* --- MAP VISUALIZATION (YOUR SPECIFIC REQUEST) --- */
-/* Target Leaflet Interactive paths (The Province Polygons) */
-.leaflet-interactive {
-    stroke: black !important;       /* Black Borders */
-    stroke-width: 2px !important;   /* Border Thickness */
-    fill: #555555;                  /* Solid Dark Grey Fill */
-    fill-opacity: 1 !important;     /* Fully Opaque */
-    
-    /* GLOW EFFECT: Golden/Yellow outer shine */
-    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6)); 
-    
-    transition: all 0.2s ease-out; /* Smooth hover transition */
-}
+/* Feedback Overlay */
+#feedback-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); z-index: 5000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.5s; }
+#feedback-overlay.active { opacity: 1; }
+#feedback-overlay.fading-out { background-color: black; }
+#feedback-image { max-width: 50%; border-radius: 20px; border: 5px solid #fff; box-shadow: 0 0 30px black; transition: filter 1s; }
+#feedback-overlay.fading-out #feedback-image { filter: blur(30px); }
 
-/* Hover Effect */
-.leaflet-interactive:hover {
-    stroke-width: 3px !important;
-    fill: #777 !important; /* Slightly lighter grey on hover */
-    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 1)); /* Blue shine on hover */
-    cursor: pointer;
-    z-index: 1000;
-}
+#transition-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 5500; display: none; justify-content: center; align-items: center; }
+#transition-media { width: 100%; height: 100%; object-fit: cover; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-
-/* --- UI COMPONENTS (RICH DESIGN) --- */
-
-/* Top Stats Bar */
-#stats-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 30px;
-    background-color: #34495e;
-    color: white;
-    font-size: 1.2em;
-    font-weight: bold;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-}
-
-/* Question/Prompt Bar */
-#prompt-bar {
-    background-color: #ecf0f1;
-    padding: 15px;
-    text-align: center;
-    font-size: 1.4em; /* Large readable text */
-    font-weight: bold;
-    min-height: 50px;
-    color: #2c3e50;
-    border-bottom: 4px solid #bdc3c7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-}
-
-.question-data {
-    font-size: 1.5em; 
-    color: #e74c3c;
-    font-weight: 800;
-}
-
-/* Modal (Start/Game Over Screen) */
-#modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    z-index: 5000; /* High z-index to sit on top */
-}
-
-#modal h2 { font-size: 3em; margin-bottom: 20px; }
-#modal p { font-size: 1.5em; }
-
-#modal:not(.active) { display: none; }
-
-/* Start Button */
-#start-button {
-    padding: 20px 50px;
-    font-size: 2em;
-    margin-top: 30px;
-    background-color: #27ae60;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform 0.2s;
-    pointer-events: auto; /* Ensure clickable */
-}
-#start-button:hover { transform: scale(1.05); background-color: #2ecc71; }
-
-/* --- INTRO & COUNTDOWN ANIMATIONS --- */
-#intro-screen {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: black; z-index: 9999;
-    display: flex; justify-content: center; align-items: center;
-    color: white;
-    transition: opacity 1s;
-    pointer-events: auto;
-}
-
-#intro-screen.hidden { 
-    opacity: 0; 
-    pointer-events: none; /* CRITICAL: Allows clicking through to the modal when hidden */
-}
-
-/* Large Countdown Numbers */
-.countdown-number {
-    font-size: 15em; 
-    font-weight: bold;
-    color: #f1c40f;
-    animation: pulse 0.5s infinite alternate;
-}
-@keyframes pulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.1); }
-}
-
-#play-melody-button {
-    font-size: 1.2em;
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+/* Intro Text Overlay (Video Text) */
+#overlay-text-layer { font-family: 'Rye', serif; color: #ffca28; text-shadow: 5px 5px 0px #3e2723, -2px -2px 0 #3e2723, 2px -2px 0 #3e2723, -2px 2px 0 #3e2723, 2px 2px 0 #3e2723; letter-spacing: 3px; line-height: 1.1; text-align: center; z-index: 6000; }
